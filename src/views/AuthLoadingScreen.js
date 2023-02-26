@@ -1,29 +1,27 @@
-import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import firebase from 'firebase/compat/app';
-import Background from '../components/Background'
-import { theme } from '../core/theme'
+import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 
-export default function AuthLoadingScreen({ navigation }) {
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // User is logged in
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Home' }],
-      })
-    } else {
-      // User is not logged in
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'StartScreen' }],
-      })
-    }
-  })
+export default function AuthLoadingScreen() {
+  const history = useHistory();
+
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        history.replace('/home');
+      } else {
+        history.replace('/start');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [history]);
 
   return (
-    <Background>
-      <ActivityIndicator size="large" color={theme.colors.primary} />
-    </Background>
-  )
+    <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <CircularProgress color="primary" />
+    </Container>
+  );
 }

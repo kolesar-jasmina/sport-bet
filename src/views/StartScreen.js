@@ -1,26 +1,31 @@
-import React from 'react'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import Paragraph from '../components/Paragraph'
+import React from 'react';
+import {
+  Container,
+  Typography,
+  Button,
+} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
+export default function StartScreen() {
+  const history = useHistory();
 
-export default function StartScreen({ navigation }) {
-
+  const handleLoginClick = () => {
+    history.push('/login');
+  };
 
   return (
-    <Background>
-      <Logo />
-      <Header>Bet Bro</Header>
-
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" align="center">
+        Bet Bro
+      </Typography>
       <Button
-        mode="contained"
-        onPress={() => navigation.navigate('LoginScreen')}
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={handleLoginClick}
       >
         Login
       </Button>
-
-    </Background>
-  )
+    </Container>
+  );
 }

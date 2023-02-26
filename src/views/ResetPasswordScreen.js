@@ -1,65 +1,83 @@
-import React, { useState } from 'react'
-import Background from '../components/Background'
-import BackButton from '../components/BackButton'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import TextInput from '../components/TextInput'
-import Button from '../components/Button'
-import { emailValidator } from '../helpers/emailValidator'
-import { sendEmailWithPassword } from '../api/auth-api'
-import Toast from '../components/Toast'
+import React, { useState } from 'react';
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Snackbar,
+} from '@material-ui/core';
+import { emailValidator } from '../helpers/emailValidator';
+import { sendEmailWithPassword } from '../api/auth-api';
 
 export default function ResetPasswordScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [loading, setLoading] = useState(false)
-  const [toast, setToast] = useState({ value: '', type: '' })
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ open: false, type: '', message: '' });
+
+  const handleCloseToast = () => {
+    setToast({ open: false, type: '', message: '' });
+  };
 
   const sendResetPasswordEmail = async () => {
-    const emailError = emailValidator(email.value)
+    const emailError = emailValidator(email.value);
     if (emailError) {
-      setEmail({ ...email, error: emailError })
-      return
+      setEmail({ ...email, error: emailError });
+      return;
     }
-    setLoading(true)
-    const response = await sendEmailWithPassword(email.value)
+    setLoading(true);
+    const response = await sendEmailWithPassword(email.value);
     if (response.error) {
-      setToast({ type: 'error', message: response.error })
+      setToast({ open: true, type: 'error', message: response.error });
     } else {
       setToast({
+        open: true,
         type: 'success',
         message: 'Email with password has been sent.',
-      })
+      });
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Restore Password</Header>
-      <TextInput
+    <Container maxWidth="xs">
+      <Typography variant="h4" component="h1" gutterBottom>
+        Restore Password
+      </Typography>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        id="email"
         label="E-mail address"
-        returnKeyType="done"
+        name="email"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChange={(event) =>
+          setEmail({ value: event.target.value, error: '' })
+        }
         error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-        description="You will receive email with password reset link."
+        helperText={email.error}
+        autoComplete="email"
+        autoFocus
       />
       <Button
-        loading={loading}
-        mode="contained"
-        onPress={sendResetPasswordEmail}
-        style={{ marginTop: 16 }}
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={sendResetPasswordEmail}
+        disabled={loading}
       >
-        Send Instructions
+        {loading ? 'Loading' : 'Send Instructions'}
       </Button>
-      <Toast {...toast} onDismiss={() => setToast({ value: '', type: '' })} />
-    </Background>
-  )
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={6000}
+        onClose={handleCloseToast}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        message={toast.message}
+        severity={toast.type}
+      />
+    </Container>
+  );
 }

@@ -1,19 +1,12 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
-import BackButton from '../components/BackButton'
-import { theme } from '../core/theme'
 import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { nameValidator } from '../helpers/nameValidator'
 import { signUpUser } from '../api/auth-api'
-import Toast from '../components/Toast'
-import SocialLogins from '../components/SocialLogins'
+// import SocialLogins from '../components/SocialLogins'
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })
@@ -45,23 +38,20 @@ export default function RegisterScreen({ navigation }) {
   }
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Create Account</Header>
-      <TextInput
+    <Box component="form">
+      <h3>Create Account</h3>
+      <TextField
         label="Name"
-        returnKeyType="next"
         value={name.value}
-        onChangeText={(text) => setName({ value: text, error: '' })}
+        onChange={(text) => setName({ value: text, error: '' })}
         error={!!name.error}
         errorText={name.error}
       />
-      <TextInput
+      <TextField
         label="Email"
         returnKeyType="next"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChange={(text) => setEmail({ value: text, error: '' })}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -69,42 +59,30 @@ export default function RegisterScreen({ navigation }) {
         textContentType="emailAddress"
         keyboardType="email-address"
       />
-      <TextInput
+      <TextField
         label="Password"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
+        onChange={(text) => setPassword({ value: text, error: '' })}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
       />
       <Button
+        variant="outlined"
         loading={loading}
-        mode="contained"
         onPress={onSignUpPressed}
         style={{ marginTop: 24 }}
       >
         Sign Up
       </Button>
-      <SocialLogins setError={setError} />
-      <View style={styles.row}>
-        <Text>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
-          <Text style={styles.link}>Login</Text>
-        </TouchableOpacity>
-      </View>
-      <Toast message={error} onDismiss={() => setError('')} />
-    </Background>
+      {/* <SocialLogins setError={setError} /> */}
+      <Box>
+        <span>Already have an account? </span>
+        <Button onClick={() => navigation.replace('LoginScreen')}>
+          <span style={{color: 'blue'}}>Login</span>
+        </Button>
+      </Box>
+    </Box>
   )
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  link: {
-    fontWeight: 'bold',
-    color: theme.colors.primary,
-  },
-})

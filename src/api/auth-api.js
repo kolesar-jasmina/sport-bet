@@ -1,46 +1,36 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut, updateProfile } from "firebase/auth";
+
+// Initialize Firebase app
+const auth = getAuth();
 
 export const logoutUser = () => {
-  firebase.auth().signOut()
+  signOut(auth);
 }
 
 export const signUpUser = async ({ name, email, password }) => {
   try {
-    const user = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-    firebase.auth().currentUser.updateProfile({
-      displayName: name,
-    })
-    return { user }
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, { displayName: name });
+    return { user: userCredential.user };
   } catch (error) {
-    return {
-      error: error.message,
-    }
+    return { error: error.message };
   }
 }
 
 export const loginUser = async ({ email, password }) => {
   try {
-    const user = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-    return { user }
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return { user: userCredential.user };
   } catch (error) {
-    return {
-      error: error.message,
-    }
+    return { error: error.message };
   }
 }
 
 export const sendEmailWithPassword = async (email) => {
   try {
-    await firebase.auth().sendPasswordResetEmail(email)
-    return {}
+    await sendPasswordResetEmail(auth, email);
+    return {};
   } catch (error) {
-    return {
-      error: error.message,
-    }
+    return { error: error.message };
   }
 }

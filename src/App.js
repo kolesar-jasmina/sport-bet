@@ -1,24 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+// TODO: check fonts. it says to add them to the entry file... is this the entry file?
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import HomeScreen from './views/HomeScreen'
+import Login from './views/LoginScreen'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Route exact path="/" component={HomeScreen} />
+      <Route path="/login" component={Login} />
+      {/* <Route path="/contact" component={Contact} /> */}
+    </Router>
   );
 }
 

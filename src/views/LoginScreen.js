@@ -1,108 +1,67 @@
-import React, { useState } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
-import BackButton from '../components/BackButton'
-import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { loginUser } from '../api/auth-api'
-import Toast from '../components/Toast'
-import SocialLogins from '../components/SocialLogins'
+import React, { useState } from 'react';
+import {
+  Container,
+  Typography,
+  Button,
+  TextField,
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { emailValidator } from '../helpers/emailValidator';
+import { sendEmailWithPassword } from '../api/auth-api';
 
-export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
-  const [loading, setLoading] = useState()
-  const [error, setError] = useState()
+export default function ResetPasswordScreen() {
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ value: '', type: '' });
 
-  const onLoginPressed = async () => {
-    const emailError = emailValidator(email.value)
-    const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError })
-      setPassword({ ...password, error: passwordError })
-      return
+  const handleSendResetPasswordEmail = async () => {
+    const emailError = emailValidator(email.value);
+    if (emailError) {
+      setEmail({ ...email, error: emailError });
+      return;
     }
-    setLoading(true)
-    const response = await loginUser({
-      email: email.value,
-      password: password.value,
-    })
+    setLoading(true);
+    const response = await sendEmailWithPassword(email.value);
     if (response.error) {
-      setError(response.error)
+      setToast({ type: 'error', message: response.error });
+    } else {
+      setToast({
+        type: 'success',
+        message: 'Email with password has been sent.',
+      });
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
-    <Background>
-      <BackButton goBack={navigation.goBack} />
-      <Logo />
-      <Header>Welcome back.</Header>
-      <TextInput
-        label="Email"
-        returnKeyType="next"
+    <Container maxWidth="sm">
+      <Typography variant="h4" component="h1" align="center" gutterBottom>
+        Restore Password
+      </Typography>
+      <TextField
+        label="E-mail address"
+        variant="outlined"
+        fullWidth
+        margin="normal"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChange={(event) =>
+          setEmail({ value: event.target.value, error: '' })
+        }
         error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+        helperText={email.error}
       />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ResetPasswordScreen')}
-        >
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
-      <Button loading={loading} mode="contained" onPress={onLoginPressed}>
-        Login
+      <Button
+        fullWidth
+        variant="contained"
+        color="primary"
+        onClick={handleSendResetPasswordEmail}
+        disabled={loading}
+      >
+        {loading ? 'Sending...' : 'Send Instructions'}
       </Button>
-      <SocialLogins />
-      <View style={styles.row}>
-        <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-      <Toast message={error} onDismiss={() => setError('')} />
-    </Background>
-  )
+      <Typography variant="body2" align="center" style={{ marginTop: '16px' }}>
+        Remember your password? <Link to="/login">Login</Link>
+      </Typography>
+    </Container>
+  );
 }
-
-const styles = StyleSheet.create({
-  forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 24,
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
-  },
-  link: {
-    fontWeight: 'bold',
-    color: theme.colors.primary,
-  },
-})
