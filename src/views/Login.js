@@ -5,7 +5,7 @@ import { emailValidator } from '../helpers/emailValidator';
 import { loginUser } from '../api/auth-api';
 import SocialsLogin from '../components/SocialsLogin';
 
-const LoginScreen = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
@@ -43,7 +43,7 @@ const LoginScreen = () => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" component="h1" align="center" gutterBottom>
-        Login
+        Login - <span style={{color: 'red'}}>Currently only GOOGLE login is available</span>
       </Typography>
       <TextField
         label="E-mail address"
@@ -54,6 +54,7 @@ const LoginScreen = () => {
         onChange={(event) => setEmail({ value: event.target.value, error: '' })}
         error={!!email.error}
         helperText={email.error}
+        disabled
       />
       <TextField
         label="Password"
@@ -65,8 +66,9 @@ const LoginScreen = () => {
         onChange={(event) => setPassword({ value: event.target.value, error: '' })}
         error={!!password.error}
         helperText={password.error}
+        disabled
       />
-      <Button fullWidth variant="contained" color="primary" onClick={handleLogin} disabled={loading}>
+      <Button fullWidth variant="contained" color="primary" onClick={handleLogin} disabled>
         {loading ? 'Logging in...' : 'Log In'}
       </Button>
       <Typography variant="body2" align="center" style={{ marginTop: '16px' }}>
@@ -77,4 +79,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default Login;

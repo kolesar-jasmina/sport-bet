@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
-export default function RegisterScreen({ navigation }) {
+export default function Register({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' })
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
@@ -79,7 +79,7 @@ export default function RegisterScreen({ navigation }) {
       {/* <SocialLogins setError={setError} /> */}
       <Box>
         <span>Already have an account? </span>
-        <Button onClick={() => navigation.replace('LoginScreen')}>
+        <Button onClick={() => navigation.replace('Login')}>
           <span style={{color: 'blue'}}>Login</span>
         </Button>
       </Box>

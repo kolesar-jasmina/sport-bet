@@ -3,14 +3,15 @@ import { Button, makeStyles } from '@material-ui/core';
 import { FaGoogle } from 'react-icons/fa';
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../api/auth-api';
+import { palette } from '../css-constants';
 
 const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: '16px',
-    backgroundColor: '#fff',
-    color: '#333',
+    backgroundColor: palette.primaryDark,
+    color: palette.white,
     '&:hover': {
-      backgroundColor: '#fff',
+      backgroundColor: palette.primaryMain,
     },
   },
   googleIcon: {

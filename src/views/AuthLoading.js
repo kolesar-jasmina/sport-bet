@@ -4,7 +4,7 @@ import firebase from 'firebase/compat/app';
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export default function AuthLoadingScreen() {
+export default function AuthLoading() {
   const navigate = useNavigate();
 
   useEffect(() => {

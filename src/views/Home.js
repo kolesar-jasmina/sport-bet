@@ -5,7 +5,7 @@ import { parseData } from '../helpers/parseData';
 import GamesTable from '../components/GamesTable';
 import { todaysGames } from '../assets/games';
 
-const HomeScreen = () => {
+const Home = () => {
   const navigate = useNavigate();
   
   const data = parseData(todaysGames);
@@ -20,4 +20,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default Home;

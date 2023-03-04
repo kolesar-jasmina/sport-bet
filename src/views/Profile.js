@@ -4,7 +4,7 @@ import { logoutUser } from '../api/auth-api'
 import Button from '../components/Button'
 import TopBar from '../components/TopBar'
 
-export default function ProfileScreen() {
+export default function Profile() {
   return (
     <>
       <TopBar title="Profile" />

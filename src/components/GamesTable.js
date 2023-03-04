@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
-import {palette} from '../constants';
+import { palette } from '../css-constants';
 
 const TeamNameTableCell = styled(TableCell)`
   && {

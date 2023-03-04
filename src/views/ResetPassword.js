@@ -9,7 +9,7 @@ import {
 import { emailValidator } from '../helpers/emailValidator';
 import { sendEmailWithPassword } from '../api/auth-api';
 
-export default function ResetPasswordScreen({ navigation }) {
+export default function ResetPassword({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ open: false, type: '', message: '' });

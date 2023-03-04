@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 
-export default function StartScreen() {
+export default function Start() {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {

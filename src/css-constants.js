@@ -10,5 +10,6 @@ export const palette = {
     warningDark: '#f57c00',
     errorLight: '#e57373',
     errorMain: '#f44336',
-    errorDark: '#d32f2f'
+    errorDark: '#d32f2f',
+    white: '#ffffff'
 }

@@ -3,6 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Link, IconButton, Avatar, Menu, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepOrange } from '@material-ui/core/colors';
+import { logoutUser } from '../api/auth-api';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -37,7 +38,7 @@ const Header = ({ user, handleLogout }) => {
   };
 
   const handleLogoutClick = () => {
-    handleLogout();
+    logoutUser();
     navigate('/');
   };
 
