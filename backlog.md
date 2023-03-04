@@ -11,3 +11,10 @@
 [] Fill collapsable sections with real-world data (twitter sentiment, google searches, bing AI...) - think about this...
 [] Hide Evaluation Values from todays games table, but make it visible on some button click (maybe table should expand to the right on right edge click?)
 [] user can track his bets accros history see his balance
+[] add a description of what Expected value is
+[] add a payment method and block unsubscribed users :)
+[] tests tests tests
+[] stability and security when deployed
+[] sell the app for 9349181$ but keep an original copy becuse you are a degenerate gambler
+[] spend all money on bad bets
+[] die
