@@ -4,13 +4,13 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function StartScreen() {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    history.push('/login');
+    navigate('/login');
   };
 
   return (
