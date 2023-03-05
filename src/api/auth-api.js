@@ -7,7 +7,6 @@ import {
   updateProfile
 } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
-// import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAYiuZaxArnAwPZzNCjFyirdTc2Zl0xyQs",
@@ -18,16 +17,15 @@ const firebaseConfig = {
   messagingSenderId: "268246168759",
   appId: "1:268246168759:web:631254c9c073c5192ac932",
   measurementId: "G-C31Y4YR6DB"
-}
+};
 
 // Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-// const db = getFirestore();
 
 export const logoutUser = () => {
   signOut(auth);
-}
+};
 
 export const signUpUser = async ({ name, email, password }) => {
   try {
@@ -37,7 +35,7 @@ export const signUpUser = async ({ name, email, password }) => {
   } catch (error) {
     return { error: error.message };
   }
-}
+};
 
 export const loginUser = async ({ email, password }) => {
   try {
@@ -46,7 +44,7 @@ export const loginUser = async ({ email, password }) => {
   } catch (error) {
     return { error: error.message };
   }
-}
+};
 
 export const sendEmailWithPassword = async (email) => {
   try {
@@ -55,4 +53,4 @@ export const sendEmailWithPassword = async (email) => {
   } catch (error) {
     return { error: error.message };
   }
-}
+};
