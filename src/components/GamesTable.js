@@ -1,130 +1,78 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  Paper
 } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { palette } from '../css-constants';
+import SubRow from './SubRow';
 
-const TeamNameTableCell = styled(TableCell)`
-  && {
-    background-color: ${({ iswinner, mixed }) =>
-      mixed && iswinner ? palette.warningLight : iswinner ? palette.successLight : palette.errorLight};
-    color: white;
-  }
-`;
-const HighlightCell = styled(TableCell)`
-  && {
-    background-color: ${({ color }) => color};
-  }
-`;
-const AcordionCell = styled(TableCell)`
-  && {
-    .MuiAccordionSummary-content {
-      margin: 0!important;
-    }
-    .MuiAccordionSummary-expandIcon {
-      padding: 10px 10px 10px 0;
-    }
-    .MuiAccordionSummary-root {
-      background-color: #90caf9;
-    }
-    .MuiAccordionDetails-root {
-      background-color: #90caf9;
-    }
-  }
-`;
+const TeamNameTableCell = styled(TableCell)(({ isWinner, mixed }) => ({
+  backgroundColor: mixed && isWinner ? palette.warningLight : isWinner ? palette.successLight : palette.errorLight,
+  color: 'white',
+//   fontSize: '14px',
+  padding: '8px',
+  cursor: 'pointer'
+}));
 
-function GamesTable({ data }) {
-  const [expandedRow, setExpandedRow] = useState(null);
+const HighlightCell = styled(TableCell)(({ color }) => ({
+  backgroundColor: color,
+  fontSize: '14px',
+  padding: '8px',
+  cursor: 'pointer'
+}));
 
-  const handleExpandClick = (index) => {
-    setExpandedRow(expandedRow === index ? null : index);
-  };
+const GamesTable = ({ data }) => {
+    const [expandedRow, setExpandedRow] = useState(null);
+    const onRowClick = (game) => {
+        const id = `${game.date}-${game.home_team}-${game.away_team}`;
+        const expanded = expandedRow === id ? false : id;
+        setExpandedRow(expanded)
+    };
 
-return (
-  <TableContainer component={Paper}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell style={{ padding: 0 }}>
-            <div style={{ display: 'flex', width: '100%'}}>
-              <span style={{ width: '35%', padding: '14px 0 0 14px'}}>Home</span>
-              <span style={{ width: '35%', padding: '14px 0 14px 14px'}}>Away</span>
-              <span style={{ width: '15%', padding: '14px'}}>M1</span>
-              <span style={{ width: '15%', padding: '14px'}}>M2</span>
-            </div>
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {data?.map((game, index) => (
-          <>
-            <TableRow>
-              <AcordionCell style={{ padding: 0 }} colSpan={4}>
-                <Accordion
-                  expanded={expandedRow === index}
-                  onChange={() => handleExpandClick(index)}
-                  style={{ backgroundColor: 'white' }}
-                >
-                  <AccordionSummary style={{margin: 0, padding: 0}} expandIcon={<ExpandMoreIcon />}>
-                    <TeamNameTableCell style={{width: '35%'}}
-                      iswinner={game.xgb.winner === 'home_team' || game.nn.winner === 'home_team'}
-                      mixed={game.xgb.winner === 'away_team' || game.nn.winner === 'away_team'}
-                    >
-                      {game.home_team}
-                    </TeamNameTableCell>
-                    <TeamNameTableCell style={{width: '35%'}}
-                      iswinner={game.xgb.winner === 'away_team' || game.nn.winner === 'away_team'}
-                      mixed={game.xgb.winner === 'home_team' || game.nn.winner === 'home_team'}
-                    >
-                      {game.away_team}
-                    </TeamNameTableCell>
-                    <HighlightCell style={{width: '15%'}} color={palette.primaryMain}>
-                      {`${game.xgb.percentage}${
-                        (game.xgb.winner === 'away_team' || game.nn.winner === 'away_team') &&
-                        (game.xgb.winner === 'home_team' || game.nn.winner === 'home_team')
-                          ? game.xgb.winner
-                          : ''
-                      }`}
-                      %
-                    </HighlightCell>
-                    <HighlightCell style={{width: '15%'}} color={palette.primaryMain}>
-                      {`${game.nn.percentage}${
-                        (game.xgb.winner === 'away_team' || game.nn.winner === 'away_team') &&
-                        (game.xgb.winner === 'home_team' || game.nn.winner === 'home_team')
-                          ? game.nn.winner
-                          : ''
-                      }`}
-                      %
-                    </HighlightCell>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div>
-                      <li>TODO:</li>
-                      <li>user comments</li>
-                      <li>user likes</li>
-                      <li>oter data from the internet</li>
-                      <li>twitter data...</li>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-              </AcordionCell>
-            </TableRow>
-          </>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-)};
+  return (
+    <TableContainer component={Paper} >
+      <Table>
+        <TableHead>
+          <TableCell>Home</TableCell>
+          <TableCell>Away</TableCell>
+          <TableCell>M1</TableCell>
+          <TableCell>M2</TableCell>
+        </TableHead>
+        <TableBody>
+          {data?.map((game) => {
+            const isHomeWinner = game.xgboost.winner === 1 || game.nn.winner === 1;
+            const isAwayWinner = game.xgboost.winner === 0 || game.nn.winner === 0;
+            return (
+            <>
+                <TableRow>
+                <TeamNameTableCell onClick={() => onRowClick(game)} isWinner={isHomeWinner} mixed={isAwayWinner}>
+                    {game.home_team}
+                </TeamNameTableCell>
+                <TeamNameTableCell onClick={() => onRowClick(game)} isWinner={isAwayWinner} mixed={isHomeWinner}>
+                    {game.away_team}
+                </TeamNameTableCell>
+                <HighlightCell onClick={() => onRowClick(game)} color={palette.primaryMain}>
+                    {`${game.xgboost.winner_confidence}${(isAwayWinner) && (isHomeWinner) ? game.xgboost.winner : '' }%`}
+                </HighlightCell>
+                <HighlightCell onClick={() => onRowClick(game)} color={palette.primaryMain} >
+                    {`${game.nn.winner_confidence}${(isAwayWinner) && (isHomeWinner) ? game.nn.winner : ''}%`}
+                </HighlightCell>
+                </TableRow>
+                {expandedRow === `${game.date}-${game.home_team}-${game.away_team}` && (
+                <SubRow />
+                )}
+            </>
+          )})}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 export default GamesTable;

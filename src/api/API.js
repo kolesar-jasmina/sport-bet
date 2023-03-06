@@ -20,6 +20,16 @@ export const getAllPredictions = async () => {
     });
 }
 
+export const getMetadataForToday = async () => {
+    try {
+        const response = await fetch('https://example.com/api/data');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        return error;
+    }
+};
+
 // export const getPredictionById = async (setData, id) => {
 //     const db = getDatabase(app);
 //     const gamesRef = ref(db, 'predictions/' + id);
