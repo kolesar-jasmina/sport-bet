@@ -1,24 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
-import { parseData } from '../helpers/parseData';
 import GamesTable from '../components/GamesTable';
-import { getAllPredictions } from '../api/API';
+import GamesHistoryTable from '../components/GamesHistoryTable';
+import { getAllPredictions, getMetadataForToday } from '../api/API';
 
 const Home = () => {
-  const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const [metadata, setMetadata] = useState([]);
 
   useEffect(() => {
-    (() => {
-      async function fectchData() {
-        const data = await getAllPredictions();
-        const parsedData = parseData(data);
-        setData(parsedData);
-      }
-      fectchData()
-    })()
+    const fetchData = async () => {
+      const data = await getAllPredictions();
+      setData(transformData(data))
+
+      // const metadata = await getMetadataForToday();
+      // console.log('metadata', metadata);
+      // setMetadata(metadata)
+    };
+    fetchData();
   }, []);
+
+  const transformData = (data) => {
+    data.forEach(element => {
+      element.games.forEach(game => {
+        // add date to each game, not sure if this is the best way to do it
+        game.date = element.date;
+      });
+      element.games.sort((a, b) => new Date(a.date) - new Date(b.date));
+    });
+
+    return data;
+  };
+  console.log('data', data);
 
   return (
     <Container maxWidth="md">
@@ -27,12 +40,9 @@ const Home = () => {
       </Typography>
       <Card>
         <CardContent>
-          <Typography variant="body1" component="p">
-            <div>Here in BB, we use machine learning, AI and all other resources that we can find to make the best possible guess witch team will win the game.</div>
-            <div>First table is the Todays Games table. Updated each day.</div>
-            <div>Currently we use two different AI models to get predictions (in table M1 and M2).</div>
-            <div>Precentage is the chance that the green team will WIN of each model respectfully.</div>
-            <div>If Home and Away team names are orange, that means that the models have picked oposite teams</div>
+          <Typography variant="body1" component="div">
+            <div>Here in BB, we use machine learning, AI, and other resources to make the best possible guess which team will win the game.</div>
+            <div style={{ marginTop: '14px' }}>The first table is the Todays Games table, updated each day. It shows the two AI models used to make predictions (M1 and M2), the percentage chance that the green team will win from each model, and if the home and away team names are orange, that means that the models have picked opposite teams.</div>
             <ul>
               <li>
                 M1 - XGBoost model
@@ -41,17 +51,12 @@ const Home = () => {
                 M2 - Neural Network model.
               </li>
             </ul>
+            <div>The second table shows previous games where the model made predictions, initially sorted by date from yesterday to the past. </div>
           </Typography>
         </CardContent>
       </Card>
-      <GamesTable data={data?.[0]?.data} />
-      <Card>
-        <CardContent>
-          <Typography variant="body1" component="p">
-            <div>TODO: season history of the models performance. Kolko su pogadjali u proslosti poredjano od juce pa na dogle god ima podataka</div>
-          </Typography>
-        </CardContent>
-      </Card>
+      <GamesTable data={data?.[0]?.games} />
+      {/* <GamesHistoryTable data={data} /> */}
     </Container>
   );
 };
