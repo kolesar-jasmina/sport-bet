@@ -1,6 +1,36 @@
-# Getting Started with Create React App
+# Sports/Game Prediction App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app uses machine learning and AI models to make predictions for various sports or games. It provides users with updated information about upcoming games and predictions for which team is likely to win.
+
+_This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)._
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Features](#features)
+- [Available Scripts](#available-scripts)
+- [Learn More](#learn-more)
+- [Other Section](#other-section)
+
+## Getting Started
+To get started with the app, follow these steps:
+
+* **Clone this repository** to your local machine
+* **Install the necessary** dependencies using `npm install`
+* **Run the app** using `npm start`
+* Open your browser and go to http://localhost:3000
+
+## Features
+* Todays Games table updated daily using JavaScript's setInterval function
+* Two AI models: XGBoost and Neural Network
+* Predictions for which team is likely to win based on both models
+* Percentages indicating the chance that the green team will win based on each model respectively
+
+**More about The XGBoost and Neural**
+
+The XGBoost and Neural Network models used in this app are both machine learning models commonly used in predictive modeling. XGBoost (Extreme Gradient Boosting) is a decision-tree-based algorithm that uses gradient boosting to improve accuracy and reduce overfitting. It has gained popularity in recent years due to its efficiency and effectiveness in solving complex regression and classification problems.
+
+The Neural Network model, on the other hand, is a type of artificial neural network that is modeled after the structure of the human brain. It consists of multiple interconnected layers of nodes that process information in a non-linear way, allowing it to learn complex patterns and relationships in data.
+
+In this app, both models are trained using historical data on various sports or games. The trained models are then used to predict the outcome of future games based on a set of input features such as team rankings, player statistics, and weather conditions. The predictions are presented to users along with the percentage indicating the chance that the green team will win based on each model respectively.
 
 ## Available Scripts
 
@@ -45,6 +75,8 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+## Other Section
+
 ### Code Splitting
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
@@ -68,3 +100,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
